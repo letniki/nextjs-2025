@@ -1,21 +1,38 @@
-import Form from "next/form";
+"use client"
 import {createCar} from "@/server-actions/ServerActions";
+import {useForm} from "react-hook-form";
+import {addCar} from "@/services/api.service";
+import {ICar} from "@/models/ICar";
+import {joiResolver} from "@hookform/resolvers/joi";
+import {carValidator} from "@/validators/carValidator";
 
 export const AddCarForm = () => {
+const {handleSubmit, register, formState: {errors, isValid}} = useForm<ICar>({mode: 'all', resolver: joiResolver(carValidator)});
+
+    const handler = async (data: ICar) => {
+        try{
+    await addCar(data);
+        } catch (e){
+    console.log(e);
+        }
+    }
 
     return (
-        <Form action={createCar} >
+        <form onSubmit={handleSubmit(handler)} action={createCar} >
             <div>brand:
-               <input type="text" name='brand' />
+                <input type="text" {...register('brand')}/>
+                <div>{errors.brand?.message}</div>
             </div>
             <div>
-                price: <input type="number" name='price' />
+                price: <input type="number" {...register('price')}/>
+                <div>{errors.price?.message}</div>
             </div>
             <div>
-                year: <input type="number" name='year'/>
+                year: <input type="number" {...register('year')}/>
+                <div>{errors.year?.message}</div>
             </div>
-            <button>Save car</button>
-        </Form>
+            <button disabled={!isValid}>Save car</button>
+        </form>
     );
 };
 
