@@ -1,16 +1,16 @@
 "use client"
 import {useForm} from "react-hook-form";
-import {addCar} from "@/services/api.service";
 import {ICar} from "@/models/ICar";
 import {joiResolver} from "@hookform/resolvers/joi";
 import {carValidator} from "@/validators/carValidator";
+import {createCar} from "@/server-actions/ServerActions";
 
 export const AddCarForm = () => {
 const {handleSubmit, register, formState: {errors, isValid}} = useForm<ICar>({mode: 'all', resolver: joiResolver(carValidator)});
 
     const handler = async (data: ICar) => {
         try{
-    await addCar(data);
+    await createCar(data);
         } catch (e){
     console.log(e);
         }
