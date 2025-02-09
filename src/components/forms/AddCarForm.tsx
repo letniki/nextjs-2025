@@ -1,5 +1,4 @@
 "use client"
-import {createCar} from "@/server-actions/ServerActions";
 import {useForm} from "react-hook-form";
 import {addCar} from "@/services/api.service";
 import {ICar} from "@/models/ICar";
@@ -18,7 +17,7 @@ const {handleSubmit, register, formState: {errors, isValid}} = useForm<ICar>({mo
     }
 
     return (
-        <form onSubmit={handleSubmit(handler)} action={createCar} >
+        <form onSubmit={handleSubmit(handler)} >
             <div>brand:
                 <input type="text" {...register('brand')}/>
                 <div>{errors.brand?.message}</div>
